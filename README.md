@@ -1,5 +1,5 @@
 # DiscountCalculator
-##Założenia:
+## Założenia:
 * Rabat i cena produktu nie mogą być ujemne.
 * Nazwa produktu nie może być null'em.
 * Rabat przydzielany do danego produktu jest zaokrąglany do dwóch liczb po przecinku.
