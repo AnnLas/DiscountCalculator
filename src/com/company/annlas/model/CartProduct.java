@@ -3,7 +3,6 @@ package com.company.annlas.model;
 public class CartProduct {
     private Product product;
     private double discount;
-    private static final String PL_CURRENCY = "zł";
 
     public CartProduct(Product product, double discount) {
         this.product = product;
@@ -27,8 +26,4 @@ public class CartProduct {
         this.discount = discount;
     }
 
-    @Override
-    public String toString() {
-        return "Discount for: " + product.getName() + " = " + discount + PL_CURRENCY;
-    }
 }
