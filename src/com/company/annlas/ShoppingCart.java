@@ -8,21 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
-    private List<Product> productList;
     private List<CartProduct> discountedProductsList;
     private double cartSum;
 
     public ShoppingCart() {
-        productList = new ArrayList<>();
         discountedProductsList = new ArrayList<>();
     }
 
     public void setProductList(List<Product> productList) {
-        this.productList = productList;
+        productList.forEach(product -> discountedProductsList.add(new CartProduct(product, 0)));
     }
 
     public void addProduct(Product product) {
-        productList.add(product);
+        discountedProductsList.add(new CartProduct(product, 0));
 
     }
 
@@ -34,18 +32,18 @@ public class ShoppingCart {
         cartSum = countCartSum();
 
         if (cartSum < discount) {
-            productList.forEach(product -> discountedProductsList.add(new CartProduct(product, product.getPrice())));
+            discountedProductsList.forEach(product -> product.setDiscount(product.getProductPrice()));
         } else {
-            productList
+            discountedProductsList
                     .stream()
-                    .limit(productList.size() - 1)
-                    .forEach(product -> discountedProductsList.add(new CartProduct(product, calculateSingleProductDiscount(product.getPrice(), discount))));
-            discountedProductsList.add(new CartProduct(productList.get(productList.size() - 1), Math.round((discount - countCartDiscount()) * 100) / 100.0));
+                    .limit(discountedProductsList.size() - 1)
+                    .forEach(product -> product.setDiscount(calculateSingleProductDiscount(product.getProductPrice(), discount)));
+            discountedProductsList.get(discountedProductsList.size() - 1).setDiscount(Math.round((discount - countCartDiscount()) * 100) / 100.0);
         }
     }
 
     private double countCartSum() {
-        return productList.stream().mapToDouble(Product::getPrice).sum();
+        return discountedProductsList.stream().mapToDouble(CartProduct::getProductPrice).sum();
     }
 
     private double countCartDiscount() {
@@ -59,4 +57,6 @@ public class ShoppingCart {
     public List<CartProduct> getDiscountedProductsList() {
         return discountedProductsList;
     }
+
+
 }
